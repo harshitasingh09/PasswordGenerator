@@ -1,11 +1,32 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState,useRef } from 'react'
 import './App.css'
 
 function App() {
   const [length, setLength] = useState(0)
   const [numberAllowed, setNumberAllowed] = useState(false)
   const [charAllowed, setCharAllowed] = useState(false)
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState('')
+
+  const passwordRef=useRef(null);
+
+const generatePassword = useCallback(() => {
+  let newPassword = "";
+  let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy";
+  if (numberAllowed) str += "0123456789";
+  if (charAllowed) str += "!@#$%&'()*+,-./:;<=>?@";
+  for (let i = 0; i < length; i++) {
+    const char = Math.floor(Math.random() * str.length + 1);
+    newPassword += str.charAt(char);
+  }
+  setPassword(newPassword);
+}, [length, numberAllowed, charAllowed]);
+
+
+
+useEffect(() => {
+  generatePassword();
+  console.log(password,"password");
+},[length, numberAllowed, charAllowed])
 
   return (
     <>
@@ -23,8 +44,9 @@ function App() {
             name="password"
             value={password}
             readOnly
+            ref={passwordRef}
           />
-          <button className="bg-gray-300 m-4 p-4 border-2 border-black rounded-lg">
+          <button className="bg-gray-300 m-4 p-4 border-2 border-black rounded-lg" >
             copy
           </button>
         </div>
@@ -70,7 +92,7 @@ function App() {
       </div>
      
     </>
-  );
-}
+  );}
+
 
 export default App
