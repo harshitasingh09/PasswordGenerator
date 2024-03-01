@@ -21,7 +21,11 @@ const generatePassword = useCallback(() => {
   setPassword(newPassword);
 }, [length, numberAllowed, charAllowed]);
 
+const CopyPassword=() => {
+  window.navigator.clipboard.writeText(password);
+  passwordRef.current.select()
 
+}
 
 useEffect(() => {
   generatePassword();
@@ -46,7 +50,7 @@ useEffect(() => {
             readOnly
             ref={passwordRef}
           />
-          <button className="bg-gray-300 m-4 p-4 border-2 border-black rounded-lg" >
+          <button className="bg-gray-300 m-4 p-4 border-2 border-black rounded-lg" onClick={CopyPassword}>
             copy
           </button>
         </div>
